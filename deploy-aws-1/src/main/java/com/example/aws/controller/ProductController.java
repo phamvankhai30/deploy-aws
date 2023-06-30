@@ -20,7 +20,7 @@ public class ProductController implements IProductController {
 
     @GetMapping("/list")
     @Override
-    public ResponseEntity<List<Product>> getAllProducts() {
+    public ResponseEntity<List<Product>> getAllProduct() {
         if (productService.getAllProduct().isEmpty()){
             return ResponseEntity.notFound().build();
         }
