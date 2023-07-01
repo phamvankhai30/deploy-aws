@@ -53,6 +53,7 @@ jobs:
           key: ${{ env.EC2_PRIVATE_KEY }}
           source: |
             cd ${{ env.TARGET_PATH }}/target
+            pwd
           target: '~/${{ env.TARGET_PATH }}'
 
 
