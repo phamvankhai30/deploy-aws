@@ -10,7 +10,8 @@ on:
 
 env:
   JAR_FILE_NAME: 'deploy-aws-1-0.0.1-SNAPSHOT.jar'
-  TARGET_PATH: 'deploy-aws-1'
+  SOURCE_PATH: 'deploy-aws-1'
+  TARGET_PATH: 'deploy-java'
   EC2_HOST: ${{ secrets.EC2_HOST }}
   EC2_USERNAME: ${{ secrets.EC2_USERNAME }}
   EC2_PRIVATE_KEY: ${{ secrets.EC2_PRIVATE_KEY }}
@@ -31,7 +32,7 @@ jobs:
 
       - name: Build JAR
         run: |
-          cd ${{ env.TARGET_PATH }}
+          cd ${{ env.SOURCE_PATH }}
           mvn package -DskipTests
 
       - name: Check and create directory on EC2
@@ -51,10 +52,8 @@ jobs:
           host: ${{ env.EC2_HOST }}
           username: ${{ env.EC2_USERNAME }}
           key: ${{ env.EC2_PRIVATE_KEY }}
-          source: |
-            cd ${{ env.TARGET_PATH }}/target
+          source: '${{ env.SOURCE_PATH }}/target/${{ env.JAR_FILE_NAME }}'
           target: '~/${{ env.TARGET_PATH }}'
-
 
       - name: Kill previous tmux session
         uses: appleboy/ssh-action@master
@@ -74,5 +73,5 @@ jobs:
           username: ${{ env.EC2_USERNAME }}
           key: ${{ env.EC2_PRIVATE_KEY }}
           script: |
-             cd ~/${{ env.TARGET_PATH }}
+             cd ~/${{ env.TARGET_PATH }}/${{ env.SOURCE_PATH }}/target
              tmux new-session -d -s deployment 'java -jar ${{ env.JAR_FILE_NAME }}'
