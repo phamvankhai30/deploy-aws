@@ -51,9 +51,10 @@ jobs:
           host: ${{ env.EC2_HOST }}
           username: ${{ env.EC2_USERNAME }}
           key: ${{ env.EC2_PRIVATE_KEY }}
-          source: '${{ env.TARGET_PATH }}/target/${{ env.JAR_FILE_NAME }}'
+          source: |
+            cd ${{ env.TARGET_PATH }}/target
           target: '~/${{ env.TARGET_PATH }}'
-          flatten: true
+
 
       - name: Kill previous tmux session
         uses: appleboy/ssh-action@master
