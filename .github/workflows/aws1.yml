@@ -25,8 +25,8 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v2
         with:
-          java-version: '17'
-          distribution: 'adopt'
+          java-version: 17
+          distribution: adopt
 
       - name: Build JAR
         run: |
@@ -50,8 +50,8 @@ jobs:
           host: ${{ env.EC2_HOST }}
           username: ${{ env.EC2_USERNAME }}
           key: ${{ env.EC2_PRIVATE_KEY }}
-          source: '${{ env.JAR_FILE_NAME }}'
-          target: '~/${{ env.TARGET_PATH }}'
+          source: ${{ env.TARGET_PATH }}/target/${{ env.JAR_FILE_NAME }}
+          target: ~/deploy-aws/${{ env.JAR_FILE_NAME | basename }}
 
       - name: Kill previous tmux session
         uses: appleboy/ssh-action@master
@@ -72,4 +72,4 @@ jobs:
           key: ${{ env.EC2_PRIVATE_KEY }}
           script: |
              cd ~/${{ env.TARGET_PATH }}
-             tmux new-session -d -s deployment 'java -jar ${{ env.JAR_FILE_NAME }}'
+             tmux new-session -d -s deployment java -jar ${{ env.JAR_FILE_NAME }}
