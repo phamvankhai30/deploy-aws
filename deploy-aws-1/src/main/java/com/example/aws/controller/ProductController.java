@@ -27,7 +27,7 @@ public class ProductController implements IProductController {
         return ResponseEntity.ok(productService.getAllProduct());
     }
 
-    @GetMapping("/list/by-id")
+    @GetMapping("/list/by-id-product")
     @Override
     public ResponseEntity<Optional<Product>> findProductById(@RequestParam Long id) {
         Optional<Product> productById = productService.findProductById(id);
